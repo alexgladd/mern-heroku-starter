@@ -1,8 +1,8 @@
 // api server routing
 
-const express = require('express');
+const { Router } = require('express');
 
-const api = express.Router();
+const api = Router();
 
 api.get('/test', (req, res) => {
   res.json({ message: 'Hello API user!' });
