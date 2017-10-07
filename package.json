@@ -17,5 +17,8 @@
   "devDependencies": {
     "concurrently": "^3.5.0",
     "dotenv": "^4.0.0"
+  },
+  "engines": {
+    "node": "8.x"
   }
 }
