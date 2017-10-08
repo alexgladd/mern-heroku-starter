@@ -1,22 +1,33 @@
 import React from 'react';
 import { Redirect } from 'react-router';
-import Auth from '../util/Auth';
 import QueryString from 'query-string';
+import { connect } from 'react-redux';
+import { oauthAuthorized, authenticated } from '../actions/auth';
+import Auth from '../util/Auth';
 
-const auth = {
-  github: '8959958c36292d0b35d6'
-};
+const mapStateToProps = (state) => {
+  return {
+    auth: state.auth
+  };
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onOauth: (network, code) => { dispatch(oauthAuthorized(network, code)); },
+    onAuthenticated: (token) => { dispatch(authenticated(token)); }
+  };
+}
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { authenticated: false };
+    this.handleLoginClick = this.handleLoginClick.bind(this);
   }
 
   handleLoginClick() {
     console.log('Logging in with github...');
-    window.location.href = `https://github.com/login/oauth/authorize?client_id=${auth.github}`
+    window.location.href = `https://github.com/login/oauth/authorize?client_id=${this.props.auth.github.clientId}`
   }
 
   componentDidMount() {
@@ -24,17 +35,8 @@ class Login extends React.Component {
 
     const query = QueryString.parse(this.props.location.search);
     if (query.code) {
-      // start authentication
-      Auth.oauthAuthenticate('github', query.code).then((result) => {
-        console.log('Got auth data');
-        console.log(result);
-
-        if (result.authenticated) {
-          this.setState({ authenticated: true });
-        }
-      }).catch((error) => {
-        console.log('Auth failure: ' + error.message);
-      });
+      // update state
+      this.props.onOauth('github', query.code);
     }
 
     // look for 'code' query param
@@ -44,8 +46,24 @@ class Login extends React.Component {
     // https://developer.github.com/apps/building-integrations/setting-up-and-registering-oauth-apps/about-authorization-options-for-oauth-apps/
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (!this.props.auth.authenticated && this.props.auth.github.code) {
+      // start authentication
+      Auth.oauthAuthenticate('github', this.props.auth.github.code).then((result) => {
+        console.log('Got auth data');
+        console.log(result);
+
+        if (result.authenticated) {
+          this.props.onAuthenticated('faketoken');
+        }
+      }).catch((error) => {
+        console.log('Auth failure: ' + error.message);
+      });
+    }
+  }
+
   render () {
-    if (this.state.authenticated) {
+    if (this.props.auth.authenticated) {
       return <Redirect to="/" />;
     } else {
       return (
@@ -61,4 +79,6 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+const ReduxLogin = connect(mapStateToProps, mapDispatchToProps)(Login);
+
+export default ReduxLogin;
