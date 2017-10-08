@@ -10,6 +10,7 @@ const mongoose = require('mongoose');
 
 // setup server
 const express = require('express');
+const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const app = express();
 app.set('port', process.env.PORT || 3001);
@@ -28,9 +29,11 @@ if (process.env.NODE_ENV === 'production') {
   app.use(morgan('dev'));
 }
 
-// load and use api router
+// load api routers
+const authRouter = require('./api/authRoutes');
 const apiRouter = require('./api/routes');
-app.use('/api', apiRouter);
+// parse application/json then use the api routers
+app.use('/api', bodyParser.json(), authRouter, apiRouter);
 
 // start listening
 app.listen(app.get('port'), () => {
