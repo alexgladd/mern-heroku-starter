@@ -4,6 +4,7 @@ import {
   Route,
   Link
 } from 'react-router-dom';
+import Login from './components/Login';
 import './App.css';
 
 const Home = () => (
@@ -12,43 +13,15 @@ const Home = () => (
   </div>
 )
 
-const About = () => (
+const Profile = () => (
   <div>
-    <h2>About</h2>
+    <h2>Profile</h2>
   </div>
 )
 
-const Topic = ({ match }) => (
+const Logout = () => (
   <div>
-    <h3>{match.params.topicId}</h3>
-  </div>
-)
-
-const Topics = ({ match }) => (
-  <div>
-    <h2>Topics</h2>
-    <ul>
-      <li>
-        <Link to={`${match.url}/rendering`}>
-          Rendering with React
-        </Link>
-      </li>
-      <li>
-        <Link to={`${match.url}/components`}>
-          Components
-        </Link>
-      </li>
-      <li>
-        <Link to={`${match.url}/props-v-state`}>
-          Props v. State
-        </Link>
-      </li>
-    </ul>
-
-    <Route path={`${match.url}/:topicId`} component={Topic}/>
-    <Route exact path={match.url} render={() => (
-      <h3>Please select a topic.</h3>
-    )}/>
+    <h2>Logout</h2>
   </div>
 )
 
@@ -57,17 +30,23 @@ class App extends React.Component {
     return (
       <Router basename="/app">
         <div className="App">
-          <ul>
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/about">About</Link></li>
-            <li><Link to="/topics">Topics</Link></li>
-          </ul>
+          <header>
+            <div className="HeaderLeft">
+              <Link to="/">Home</Link>
+            </div>
+            <div className="HeaderRight">
+              <Link to="/profile">Profile</Link>
+              &nbsp;&middot;&nbsp;
+              <Link to="/login">Login</Link>
+            </div>
+          </header>
 
           <hr/>
 
           <Route exact path="/" component={Home} />
-          <Route path="/about" component={About} />
-          <Route path="/topics" component={Topics} />
+          <Route path="/profile" component={Profile} />
+          <Route path="/login" component={Login} />
+          <Route path="/logout" component={Logout} />
         </div>
       </Router>
     );
