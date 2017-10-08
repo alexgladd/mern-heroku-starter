@@ -1,17 +1,26 @@
 // api authentication routing
 
 const { Router } = require('express');
+const Auth = require('./auth');
 
-const auth = Router();
+const apiAuth = Router();
 
-auth.post('/authenticate/local', (req, res) => {
+apiAuth.post('/authenticate/local', (req, res) => {
   res.status(501).json({ error: 'Not implemented' });
 });
 
-auth.post('/authenticate/:network', (req, res) => {
+apiAuth.post('/authenticate/:network', (req, res) => {
   console.log('Auth request for ' + req.params.network);
   console.log(req.body);
-  res.status(501).json({ error: 'Not implemented' });
+
+  Auth.github.authenticate(req.body.code).then(result => {
+    console.log('Got authentication result');
+    console.log(result);
+
+    res.json({ authenticated: true, name: result.name });
+  }).catch(error => {
+    res.status(500).json({ error: true, message: error.message });
+  });
 });
 
-module.exports = auth;
+module.exports = apiAuth;

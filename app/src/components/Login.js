@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router';
 import Auth from '../util/Auth';
 import QueryString from 'query-string';
 
@@ -7,6 +8,12 @@ const auth = {
 };
 
 class Login extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = { authenticated: false };
+  }
+
   handleLoginClick() {
     console.log('Logging in with github...');
     window.location.href = `https://github.com/login/oauth/authorize?client_id=${auth.github}`
@@ -18,9 +25,13 @@ class Login extends React.Component {
     const query = QueryString.parse(this.props.location.search);
     if (query.code) {
       // start authentication
-      Auth.oauthAuthenticate('github', query.code).then((data) => {
+      Auth.oauthAuthenticate('github', query.code).then((result) => {
         console.log('Got auth data');
-        console.log(data);
+        console.log(result);
+
+        if (result.authenticated) {
+          this.setState({ authenticated: true });
+        }
       }).catch((error) => {
         console.log('Auth failure: ' + error.message);
       });
@@ -34,15 +45,19 @@ class Login extends React.Component {
   }
 
   render () {
-    return (
-      <div>
-        <h2>Login</h2>
-        <p>Click below to log in with Github!</p>
-        <button className="zocial github" onClick={this.handleLoginClick}>
-          Log in with Github
-        </button>
-      </div>
-    );
+    if (this.state.authenticated) {
+      return <Redirect to="/" />;
+    } else {
+      return (
+        <div>
+          <h2>Login</h2>
+          <p>Click below to log in with Github!</p>
+          <button className="zocial github" onClick={this.handleLoginClick}>
+            Log in with Github
+          </button>
+        </div>
+      );
+    }
   }
 }
 
