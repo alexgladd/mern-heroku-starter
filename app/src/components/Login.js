@@ -27,7 +27,7 @@ class Login extends React.Component {
 
   handleLoginClick() {
     console.log('Logging in with github...');
-    window.location.href = `https://github.com/login/oauth/authorize?client_id=${this.props.auth.github.clientId}`
+    window.location.href = `https://github.com/login/oauth/authorize?client_id=${this.props.auth.githubClientId}`
   }
 
   componentDidMount() {
@@ -38,18 +38,12 @@ class Login extends React.Component {
       // update state
       this.props.onOauth('github', query.code);
     }
-
-    // look for 'code' query param
-    // use URLSearchParams or the query-string package
-    // post code to our server to authenticate with github and issue a jwt token
-    // back to the client if successful
-    // https://developer.github.com/apps/building-integrations/setting-up-and-registering-oauth-apps/about-authorization-options-for-oauth-apps/
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (!this.props.auth.authenticated && this.props.auth.github.code) {
+    if (!this.props.auth.authenticated && this.props.auth.oauth.code) {
       // start authentication
-      Auth.oauthAuthenticate('github', this.props.auth.github.code).then((result) => {
+      Auth.oauthAuthenticate('github', this.props.auth.oauth.code).then((result) => {
         console.log('Got auth data');
         console.log(result);
 
