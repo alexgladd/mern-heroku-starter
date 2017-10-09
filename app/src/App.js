@@ -45,7 +45,7 @@ class App extends React.Component {
 
           <Route exact path="/" component={Home} />
           <Route path="/profile" component={Profile} />
-          <Route path="/login" component={Login} />
+          <Route path="/login/:network?" component={Login} />
           <Route path="/logout" component={Logout} />
         </div>
       </Router>

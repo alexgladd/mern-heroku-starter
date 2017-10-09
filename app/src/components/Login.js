@@ -22,28 +22,29 @@ class Login extends React.Component {
   constructor(props) {
     super(props);
 
-    this.handleLoginClick = this.handleLoginClick.bind(this);
+    this.handleGithubLogin = this.handleGithubLogin.bind(this);
   }
 
-  handleLoginClick() {
+  handleGithubLogin() {
     console.log('Logging in with github...');
-    window.location.href = `https://github.com/login/oauth/authorize?client_id=${this.props.auth.githubClientId}`
+    window.location.href = Auth.oauthUri('github', this.props.auth.githubClientId);
   }
 
   componentDidMount() {
     console.log('Login mounted');
 
     const query = QueryString.parse(this.props.location.search);
-    if (query.code) {
+    if (query.code && this.props.match.params) {
       // update state
-      this.props.onOauth('github', query.code);
+      this.props.onOauth(this.props.match.params.network, query.code);
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (!this.props.auth.authenticated && this.props.auth.oauth.code) {
       // start authentication
-      Auth.oauthAuthenticate('github', this.props.auth.oauth.code).then((result) => {
+      Auth.oauthAuthenticate(this.props.match.params.network,
+          this.props.auth.oauth.code).then((result) => {
         console.log('Got auth data');
         console.log(result);
 
@@ -64,7 +65,7 @@ class Login extends React.Component {
         <div>
           <h2>Login</h2>
           <p>Click below to log in with Github!</p>
-          <button className="zocial github" onClick={this.handleLoginClick}>
+          <button className="zocial github" onClick={this.handleGithubLogin}>
             Log in with Github
           </button>
         </div>
