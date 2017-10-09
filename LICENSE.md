@@ -1,6 +1,4 @@
-mern-heroku-starter
-
-Copyright 2017 Alex Gladd
+Copyright (c) 2017 Alex Gladd
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
