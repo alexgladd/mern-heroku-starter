@@ -32,7 +32,7 @@ class App extends React.Component {
         <div className="App">
           <header>
             <div className="HeaderLeft">
-              <Link to="/">Home</Link>
+              <Link to="/">MERN App Home</Link>
             </div>
             <div className="HeaderRight">
               <Link to="/profile">Profile</Link>
