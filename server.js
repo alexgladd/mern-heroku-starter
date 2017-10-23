@@ -30,10 +30,9 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // load api routers
-const authRouter = require('./api/authRoutes');
 const apiRouter = require('./api/routes');
 // parse application/json then use the api routers
-app.use('/api', bodyParser.json(), authRouter, apiRouter);
+app.use('/api', bodyParser.json(), apiRouter);
 
 // start listening
 app.listen(app.get('port'), () => {
