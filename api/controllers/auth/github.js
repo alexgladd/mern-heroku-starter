@@ -20,6 +20,7 @@ exports.authenticate = (req, res) => {
     }
   }).then(profileData => {
     console.log('Github authentication success', profileData);
+    // TODO find or create user matching this profile
     res.json({ authenticated: true, name: profileData.name });
   }).catch(err => {
     res.status(500).json(err);

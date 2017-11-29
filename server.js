@@ -7,10 +7,6 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
   console.log('Server starting in production mode...');
 }
 
-// connect mongo
-const mongoose = require('mongoose');
-// TODO connect
-
 // setup server
 const express = require('express');
 const bodyParser = require('body-parser');
