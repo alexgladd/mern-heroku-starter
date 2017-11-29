@@ -8,15 +8,21 @@ const ghConfig = {
   secret: process.env.GITHUB_CLIENT_SECRET
 };
 
-const authenticate = (code) => {
-  return getAccessToken(code).then((tokenData) => {
+exports.authenticate = (req, res) => {
+  const code = req.body.code;
+
+  getAccessToken(code).then(tokenData => {
     if (tokenData && tokenData.access_token) {
       return getProfile(tokenData.access_token);
     } else {
-      return new Promise((resolve, reject) => {
-        resolve({ error: 'Could not get access token' });
-      });
+      const err = { errorMessage: 'Could not get github access token' };
+      throw err;
     }
+  }).then(profileData => {
+    console.log('Github authentication success', profileData);
+    res.json({ authenticated: true, name: profileData.name });
+  }).catch(err => {
+    res.status(500).json(err);
   });
 }
 
@@ -26,7 +32,7 @@ const getAccessToken = (code) => {
     headers: ghHeaders()
   };
 
-  return fetch(`https://github.com/login/oauth/access_token?client_id=${ghConfig.id}&client_secret=${ghConfig.secret}&code=${code}`, init).then((response) => {
+  return fetch(`https://github.com/login/oauth/access_token?client_id=${ghConfig.id}&client_secret=${ghConfig.secret}&code=${code}`, init).then(response => {
     return response.json();
   });
 }
@@ -37,5 +43,3 @@ const getProfile = (accessToken) => {
 
   return fetch('https://api.github.com/user', init).then(response => response.json());
 }
-
-module.exports = { authenticate };

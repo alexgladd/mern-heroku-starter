@@ -1,7 +1,10 @@
 // app server main
 if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
   // load development environment vars from .env
+  console.log('Server starting in development mode...');
   require('dotenv').config();
+} else {
+  console.log('Server starting in production mode...');
 }
 
 // connect mongo
@@ -36,7 +39,7 @@ app.use('/api', bodyParser.json(), apiRouter);
 
 // start listening
 app.listen(app.get('port'), () => {
-  console.log(`Server listening on port ${app.get('port')}`);
+  console.log(`Server started and listening on port ${app.get('port')}`);
 });
 
 // https://github.com/fullstackreact/food-lookup-demo
