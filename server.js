@@ -7,6 +7,9 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
   console.log('Server starting in production mode...');
 }
 
+// init server state
+console.log(`Server random value: ${require('./api/state').random}`);
+
 // setup server
 const express = require('express');
 const bodyParser = require('body-parser');
