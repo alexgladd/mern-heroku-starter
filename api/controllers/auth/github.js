@@ -45,20 +45,20 @@ exports.authenticate = async (req, res) => {
   }
 }
 
-const getAccessToken = (code) => {
+const getAccessToken = async (code) => {
   const init = {
     method: 'POST',
     headers: ghHeaders()
   };
 
-  return fetch(`https://github.com/login/oauth/access_token?client_id=${ghConfig.id}&client_secret=${ghConfig.secret}&code=${code}`, init).then(response => {
-    return response.json();
-  });
+  const response = await fetch(`https://github.com/login/oauth/access_token?client_id=${ghConfig.id}&client_secret=${ghConfig.secret}&code=${code}`, init);
+  return await response.json();
 }
 
-const getProfile = (accessToken) => {
+const getProfile = async (accessToken) => {
   const headers = Object.assign({}, ghHeaders(), { 'Authorization': `token ${accessToken}` });
   const init = { headers };
 
-  return fetch('https://api.github.com/user', init).then(response => response.json());
+  const response = await fetch('https://api.github.com/user', init);
+  return await response.json();
 }
