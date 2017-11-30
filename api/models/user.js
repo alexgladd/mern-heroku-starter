@@ -16,7 +16,7 @@ userSchema.pre('save', function(next) {
   const user = this;
 
   // validate user has some type of auth id
-  if (user.password || user.github.id) {
+  if (user.password || (user.github && user.github.id)) {
     next();
   } else {
     const err = new Error('User must have an authentication identifier');

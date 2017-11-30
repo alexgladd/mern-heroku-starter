@@ -1,5 +1,6 @@
 // implement github oauth flow
 const fetch = require('node-fetch');
+const { User } = require('../../models');
 
 const ghHeaders = () => ({ 'Accept': 'application/json' });
 
@@ -8,23 +9,40 @@ const ghConfig = {
   secret: process.env.GITHUB_CLIENT_SECRET
 };
 
-exports.authenticate = (req, res) => {
+exports.authenticate = async (req, res) => {
   const code = req.body.code;
 
-  getAccessToken(code).then(tokenData => {
-    if (tokenData && tokenData.access_token) {
-      return getProfile(tokenData.access_token);
-    } else {
+  try {
+    const tokenData = await getAccessToken(code);
+    if (!tokenData || !tokenData.access_token) {
       const err = { errorMessage: 'Could not get github access token' };
       throw err;
     }
-  }).then(profileData => {
-    console.log('Github authentication success', profileData);
-    // TODO find or create user matching this profile
-    res.json({ authenticated: true, name: profileData.name });
-  }).catch(err => {
+
+    const profileData = await getProfile(tokenData.access_token);
+    if (!profileData) {
+      const err = { errorMessage: 'Could not get github profile data' };
+      throw err;
+    }
+
+    let user = await User.findOne({ 'github.id': profileData.id }).exec();
+    if (!user) {
+      user = new User({
+        name: profileData.name,
+        github: {
+          id: profileData.id,
+          profileUrl: profileData.html_url,
+          avatarUrl: profileData.avatar_url,
+        }
+      });
+
+      user = await user.save();
+    }
+
+    res.json({ authenticated: true, name: user.name });
+  } catch(err) {
     res.status(500).json(err);
-  });
+  }
 }
 
 const getAccessToken = (code) => {
