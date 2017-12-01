@@ -1,9 +1,11 @@
 // reducers main
 import { combineReducers } from 'redux';
 import auth from './auth';
+import serverState from './serverstate';
 
 const appReducers = combineReducers({
-  auth
+  auth,
+  serverState
 });
 
 export default appReducers;

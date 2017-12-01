@@ -7,7 +7,8 @@ import Auth from '../util/Auth';
 
 const mapStateToProps = (state) => {
   return {
-    auth: state.auth
+    auth: state.auth,
+    serverState: state.serverState // TODO remove
   };
 }
 
@@ -74,6 +75,4 @@ class Login extends React.Component {
   }
 }
 
-const ReduxLogin = connect(mapStateToProps, mapDispatchToProps)(Login);
-
-export default ReduxLogin;
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

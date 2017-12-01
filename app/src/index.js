@@ -8,12 +8,15 @@ import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import reducers from './reducers';
+import { requestServerState } from './actions/serverstate';
 
 const middleware = [ thunk ];
 const store = createStore(
   reducers,
   applyMiddleware(...middleware)
 );
+
+store.dispatch(requestServerState());
 
 const reduxApp = (
   <Provider store={store}>
