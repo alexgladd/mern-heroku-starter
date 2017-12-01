@@ -1,4 +1,4 @@
-// load all auth modules
+// authentication controllers
 const Github = require('./github');
 
 exports.localAuthenticate = (req, res) => {
