@@ -13,10 +13,11 @@ export const setServerState = (serverState) => ({
 
 export const requestServerState = () => {
   return async (dispatch) => {
-    api.getServerState().then(state => {
+    try {
+      const state = await api.getServerState();
       dispatch(setServerState(state));
-    }).catch(err => {
+    } catch(err) {
       console.error('Request server state failure', err);
-    });
+    }
   };
 }

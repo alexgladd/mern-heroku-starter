@@ -2,22 +2,8 @@ import React from 'react';
 import { Redirect } from 'react-router';
 import QueryString from 'query-string';
 import { connect } from 'react-redux';
-import { oauthAuthorized, authenticated } from '../actions/auth';
+import { finishOauth } from '../actions/auth';
 import Auth from '../util/Auth';
-
-const mapStateToProps = (state) => {
-  return {
-    auth: state.auth,
-    serverState: state.serverState // TODO remove
-  };
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onOauth: (network, code) => { dispatch(oauthAuthorized(network, code)); },
-    onAuthenticated: (token) => { dispatch(authenticated(token)); }
-  };
-}
 
 class Login extends React.Component {
   constructor(props) {
@@ -27,34 +13,18 @@ class Login extends React.Component {
   }
 
   handleGithubLogin() {
-    console.log('Logging in with github...');
-    window.location.href = Auth.oauthUri('github', this.props.auth.githubClientId);
+    const { auth } = this.props;
+    // redirect to github oauth page
+    window.location.href = Auth.oauthUri('github', auth.githubClientId);
   }
 
   componentDidMount() {
-    console.log('Login mounted');
+    const { location, match, finishOauth } = this.props;
 
-    const query = QueryString.parse(this.props.location.search);
-    if (query.code && this.props.match.params) {
-      // update state
-      this.props.onOauth(this.props.match.params.network, query.code);
-    }
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (!this.props.auth.authenticated && this.props.auth.oauth.code) {
-      // start authentication
-      Auth.oauthAuthenticate(this.props.match.params.network,
-          this.props.auth.oauth.code).then((result) => {
-        console.log('Got auth data');
-        console.log(result);
-
-        if (result.authenticated) {
-          this.props.onAuthenticated('faketoken');
-        }
-      }).catch((error) => {
-        console.log('Auth failure: ' + error.message);
-      });
+    const query = QueryString.parse(location.search);
+    if (query.code && match.params.network) {
+      // finish oauth authentication
+      finishOauth(match.params.network, query.code);
     }
   }
 
@@ -74,5 +44,14 @@ class Login extends React.Component {
     }
   }
 }
+
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+  serverState: state.serverState
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  finishOauth(network, code) { dispatch(finishOauth(network, code)) }
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

@@ -46,6 +46,17 @@ const getServerState = async () => {
   return await apiRequest('/api/serverstate', buildInit());
 }
 
+// finish oauth authentication
+const oauthAuthenticate = async (network, code) => {
+  const init = buildInit({
+    method: 'POST',
+    body: JSON.stringify({ code })
+  });
+
+  return await apiRequest(`/api/authenticate/${network}`, init);
+}
+
 export default {
-  getServerState
+  getServerState,
+  oauthAuthenticate
 };
