@@ -3,7 +3,7 @@ import { Redirect } from 'react-router';
 import QueryString from 'query-string';
 import { connect } from 'react-redux';
 import { finishOauth } from '../actions/auth';
-import Auth from '../util/Auth';
+import oauth from '../util/oauth';
 
 class Login extends React.Component {
   constructor(props) {
@@ -15,7 +15,7 @@ class Login extends React.Component {
   handleGithubLogin() {
     const { auth } = this.props;
     // redirect to github oauth page
-    window.location.href = Auth.oauthUri('github', auth.githubClientId);
+    window.location.href = oauth.oauthUri('github', auth.githubClientId);
   }
 
   componentDidMount() {
