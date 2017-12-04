@@ -1,6 +1,7 @@
 // implement github oauth flow
 const fetch = require('node-fetch');
 const { User } = require('../../models');
+const state = require('../../state');
 
 const ghHeaders = () => ({ 'Accept': 'application/json' });
 
@@ -41,6 +42,7 @@ exports.authenticate = async (req, res) => {
 
     res.status(201).json(user.toUserResponse());
   } catch(err) {
+    console.error('Github authentication error', err);
     res.status(500).json(err);
   }
 }
@@ -51,7 +53,7 @@ const getAccessToken = async (code) => {
     headers: ghHeaders()
   };
 
-  const response = await fetch(`https://github.com/login/oauth/access_token?client_id=${ghConfig.id}&client_secret=${ghConfig.secret}&code=${code}`, init);
+  const response = await fetch(`https://github.com/login/oauth/access_token?client_id=${ghConfig.id}&client_secret=${ghConfig.secret}&code=${code}&state=${state.random}`, init);
   return await response.json();
 }
 

@@ -13,8 +13,9 @@ class Login extends React.Component {
   }
 
   handleGithubLogin() {
+    const { serverState } = this.props;
     // redirect to github oauth page
-    window.location.href = oauth.oauthUri(oauth.clients.github);
+    window.location.href = oauth.oauthUri(oauth.clients.github, serverState.random);
   }
 
   componentDidMount() {
@@ -47,7 +48,6 @@ class Login extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  auth: state.auth,
   user: state.user,
   serverState: state.serverState
 });

@@ -19,10 +19,10 @@ const oauthBaseUrls = {
 const oauthRedirectUri = (network) => (`http://localhost:3000/app/login/${network}`);
 
 // generate an oauth URL for the given network
-const oauthUri = (network) => {
+const oauthUri = (network, state) => {
   switch (network) {
     case clients.github:
-      return `${oauthBaseUrls.github}?client_id=${clientIds.github}&redirect_uri=${oauthRedirectUri(network)}`;
+      return `${oauthBaseUrls.github}?client_id=${clientIds.github}&redirect_uri=${oauthRedirectUri(network)}&state=${state}`;
 
     default:
       console.error('Unknown network: ' + network);
