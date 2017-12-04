@@ -2,6 +2,7 @@
 const fetch = require('node-fetch');
 const { User } = require('../../models');
 const state = require('../../state');
+const generateToken = require('./jwt');
 
 const ghHeaders = () => ({ 'Accept': 'application/json' });
 
@@ -40,7 +41,10 @@ exports.authenticate = async (req, res) => {
       user = await user.save();
     }
 
-    res.status(201).json(user.toUserResponse());
+    const userResponse = user.toUserResponse();
+    const token = generateToken(userResponse);
+
+    res.status(201).json({ ...userResponse, token });
   } catch(err) {
     console.error('Github authentication error', err);
     res.status(500).json(err);
