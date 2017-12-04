@@ -1,15 +1,28 @@
 // authentication helpers
 
+// oauth clients
+const clients = {
+  github: 'github'
+};
+
+// oauth client IDs
+const clientIds = {
+  github: '8959958c36292d0b35d6'
+};
+
+// oauth URLs
 const oauthBaseUrls = {
   github: 'https://github.com/login/oauth/authorize'
 };
 
+// oauth redirect URL
 const oauthRedirectUri = (network) => (`http://localhost:3000/app/login/${network}`);
 
-const oauthUri = (network, clientId) => {
+// generate an oauth URL for the given network
+const oauthUri = (network) => {
   switch (network) {
-    case 'github':
-      return `${oauthBaseUrls.github}?client_id=${clientId}&redirect_uri=${oauthRedirectUri(network)}`;
+    case clients.github:
+      return `${oauthBaseUrls.github}?client_id=${clientIds.github}&redirect_uri=${oauthRedirectUri(network)}`;
 
     default:
       console.error('Unknown network: ' + network);
@@ -18,5 +31,6 @@ const oauthUri = (network, clientId) => {
 }
 
 export default {
+  clients,
   oauthUri
 };

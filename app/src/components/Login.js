@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect } from 'react-router';
 import QueryString from 'query-string';
 import { connect } from 'react-redux';
-import { finishOauth } from '../actions/auth';
+import { oauthAuthenticate } from '../actions/user';
 import oauth from '../util/oauth';
 
 class Login extends React.Component {
@@ -13,9 +13,8 @@ class Login extends React.Component {
   }
 
   handleGithubLogin() {
-    const { auth } = this.props;
     // redirect to github oauth page
-    window.location.href = oauth.oauthUri('github', auth.githubClientId);
+    window.location.href = oauth.oauthUri(oauth.clients.github);
   }
 
   componentDidMount() {
@@ -29,7 +28,9 @@ class Login extends React.Component {
   }
 
   render () {
-    if (this.props.auth.authenticated) {
+    const { user } = this.props;
+
+    if (user) {
       return <Redirect to="/" />;
     } else {
       return (
@@ -47,11 +48,12 @@ class Login extends React.Component {
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
+  user: state.user,
   serverState: state.serverState
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  finishOauth(network, code) { dispatch(finishOauth(network, code)) }
+  finishOauth(network, code) { dispatch(oauthAuthenticate(network, code)) }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

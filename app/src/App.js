@@ -4,6 +4,7 @@ import {
   Route,
   Link
 } from 'react-router-dom';
+import { connect } from 'react-redux';
 import Login from './components/Login';
 import './App.css';
 
@@ -53,4 +54,8 @@ class App extends React.Component {
   }
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  user: state.user
+});
+
+export default connect(mapStateToProps, null)(App);
