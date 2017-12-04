@@ -19,9 +19,9 @@ export const logoutUser = () => ({
 export const oauthAuthenticate = (network, code) => {
   return async (dispatch) => {
     try {
-      const authResult = await api.oauthAuthenticate(network, code);
-      console.log('Got oauth result', authResult);
-      dispatch(loginUser({ name: authResult.name }));
+      const authUser = await api.oauthAuthenticate(network, code);
+      console.log('Got oauth result', authUser);
+      dispatch(loginUser(authUser));
     } catch(err) {
       console.error('OAuth authentication failure', err);
     }

@@ -39,7 +39,7 @@ exports.authenticate = async (req, res) => {
       user = await user.save();
     }
 
-    res.json({ authenticated: true, name: user.name });
+    res.status(201).json(user.toUserResponse());
   } catch(err) {
     res.status(500).json(err);
   }

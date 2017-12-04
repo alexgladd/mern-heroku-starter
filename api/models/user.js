@@ -24,4 +24,14 @@ userSchema.pre('save', function(next) {
   }
 });
 
+userSchema.methods.toUserResponse = function() {
+  return {
+    name: this.name,
+    github: {
+      profileUrl: this.github.profileUrl,
+      avatarUrl: this.github.avatarUrl
+    }
+  };
+}
+
 module.exports = mongoose.model('User', userSchema);
