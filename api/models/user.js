@@ -26,6 +26,7 @@ userSchema.pre('save', function(next) {
 
 userSchema.methods.toUserResponse = function() {
   return {
+    id: this.id,
     name: this.name,
     github: {
       profileUrl: this.github.profileUrl,
