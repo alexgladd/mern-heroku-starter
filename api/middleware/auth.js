@@ -13,7 +13,7 @@ exports.authenticateUser = (req, res, next) => {
     req.authPayload = payload;
     next();
   } catch(err) {
-    console.error(`Authentication error: ${e.message}`, e);
+    console.error(`Authentication error: ${err.message}`, err);
     res.status(401).json({ errorMessage: 'Authentication required' });
   }
 }
@@ -21,8 +21,8 @@ exports.authenticateUser = (req, res, next) => {
 // verify the user is allowed to access a resource
 // expects request params to have a userId
 exports.authorizeUser = (req, res, next) => {
-  if (req.params.userId && req.params.userId === req.authPayload.id) {
-    User.findById(req.authPayload.id).then(user => {
+  if (req.params.userId && req.params.userId === req.authPayload.user.id) {
+    User.findById(req.authPayload.user.id).then(user => {
       if (user) {
         // set authUser on the request object for later use
         req.authUser = user;
