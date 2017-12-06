@@ -5,6 +5,7 @@ import {
   Link
 } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { logoutUser } from './actions/user';
 import AuthHome from './components/AuthHome';
 import Login from './components/Login';
 import './App.css';
@@ -22,15 +23,9 @@ const Profile = () => (
   </div>
 )
 
-const Logout = () => (
-  <div>
-    <h2>Logout</h2>
-  </div>
-)
-
 class App extends React.Component {
   render() {
-    const { user } = this.props;
+    const { user, logout } = this.props;
 
     return (
       <Router basename="/app">
@@ -42,20 +37,22 @@ class App extends React.Component {
             <div className="HeaderRight">
               <Link to="/profile">Profile</Link>
               &nbsp;&middot;&nbsp;
-              { user ? <a href="javascript:;">Logout</a> : <Link to="/login">Login</Link> }
+              { user ?
+                <button onClick={() => logout()}>Logout</button> :
+                <Link to="/login">Login</Link>
+              }
             </div>
           </header>
 
           <hr/>
 
           { user ?
-              <Route exact path="/" render={props => (<AuthHome user={user} {...props} />)} /> :
-              <Route exact path="/" component={PublicHome} />
+            <Route exact path="/" render={props => (<AuthHome user={user} {...props} />)} /> :
+            <Route exact path="/" component={PublicHome} />
           }
 
           <Route path="/profile" component={Profile} />
           <Route path="/login/:network?" component={Login} />
-          <Route path="/logout" component={Logout} />
         </div>
       </Router>
     );
@@ -66,4 +63,8 @@ const mapStateToProps = (state) => ({
   user: state.user
 });
 
-export default connect(mapStateToProps, null)(App);
+const mapDispatchToProps = (dispatch) => ({
+  logout() { dispatch(logoutUser()); }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -53,7 +53,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  finishOauth(network, code) { dispatch(oauthAuthenticate(network, code)) }
+  finishOauth(network, code) { dispatch(oauthAuthenticate(network, code)); }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
