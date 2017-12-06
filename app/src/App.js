@@ -1,14 +1,13 @@
 import React from 'react';
 import {
   BrowserRouter as Router,
-  Route,
-  Link
+  Route
 } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logoutUser } from './actions/user';
+import Header from './components/Header';
 import AuthHome from './components/AuthHome';
 import Login from './components/Login';
-import './App.css';
 
 const PublicHome = () => (
   <div>
@@ -23,26 +22,18 @@ const Profile = () => (
   </div>
 )
 
+const appStyle = {
+  margin: '5vw'
+};
+
 class App extends React.Component {
   render() {
     const { user, logout } = this.props;
 
     return (
       <Router basename="/app">
-        <div className="App">
-          <header>
-            <div className="HeaderLeft">
-              <Link to="/">MERN App Home</Link>
-            </div>
-            <div className="HeaderRight">
-              <Link to="/profile">Profile</Link>
-              &nbsp;&middot;&nbsp;
-              { user ?
-                <button onClick={() => logout()}>Logout</button> :
-                <Link to="/login">Login</Link>
-              }
-            </div>
-          </header>
+        <div style={appStyle}>
+          <Header user={user} onLogout={logout} />
 
           <hr/>
 
