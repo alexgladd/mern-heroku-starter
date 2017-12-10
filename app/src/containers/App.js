@@ -4,11 +4,11 @@ import {
   Route
 } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { logoutUser } from './actions/user';
-import Header from './components/Header';
-import AuthHome from './components/AuthHome';
-import Login from './components/Login';
-import Profile from './components/Profile';
+import { logoutUser } from '../actions/user';
+import Header from '../components/Header';
+import AuthHome from '../components/AuthHome';
+import Login from '../components/Login';
+import Profile from '../components/Profile';
 
 const PublicHome = () => (
   <div>
