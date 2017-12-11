@@ -15,7 +15,7 @@ class Login extends React.Component {
   handleGithubLogin() {
     const { serverState } = this.props;
     // redirect to github oauth page
-    window.location.href = oauth.oauthUri(oauth.clients.github, serverState.random);
+    window.location.href = oauth.oauthUrl(oauth.clients.github, serverState.random);
   }
 
   componentDidMount() {

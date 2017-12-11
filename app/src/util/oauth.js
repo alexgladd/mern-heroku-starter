@@ -1,5 +1,7 @@
 // authentication helpers
 
+import build from './build';
+
 // oauth clients
 const clients = {
   github: 'github'
@@ -7,7 +9,7 @@ const clients = {
 
 // oauth client IDs
 const clientIds = {
-  github: '8959958c36292d0b35d6'
+  github: (build.prod ? '5eb101fbdbdd9ce15d8f' : '8959958c36292d0b35d6')
 };
 
 // oauth URLs
@@ -16,13 +18,14 @@ const oauthBaseUrls = {
 };
 
 // oauth redirect URL
-const oauthRedirectUri = (network) => (`http://localhost:3000/login/${network}`);
+const redirectBase = (build.prod ? 'https://mern-app-starter.herokuapp.com' : 'http://localhost:3000');
+const oauthRedirectUrl = (network) => (`${redirectBase}/login/${network}`);
 
 // generate an oauth URL for the given network
-const oauthUri = (network, state) => {
+const oauthUrl = (network, state) => {
   switch (network) {
     case clients.github:
-      return `${oauthBaseUrls.github}?client_id=${clientIds.github}&redirect_uri=${oauthRedirectUri(network)}&state=${state}`;
+      return `${oauthBaseUrls.github}?client_id=${clientIds.github}&redirect_uri=${oauthRedirectUrl(network)}&state=${state}`;
 
     default:
       console.error('Unknown network: ' + network);
@@ -32,5 +35,5 @@ const oauthUri = (network, state) => {
 
 export default {
   clients,
-  oauthUri
+  oauthUrl
 };
