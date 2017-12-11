@@ -16,7 +16,7 @@ const oauthBaseUrls = {
 };
 
 // oauth redirect URL
-const oauthRedirectUri = (network) => (`http://localhost:3000/app/login/${network}`);
+const oauthRedirectUri = (network) => (`http://localhost:3000/login/${network}`);
 
 // generate an oauth URL for the given network
 const oauthUri = (network, state) => {
