@@ -33,7 +33,7 @@ class App extends React.Component {
     }
 
     return (
-      <Router basename="/app">
+      <Router>
         <div style={appStyle}>
           <Header user={user} onLogout={logout} />
 
