@@ -1,7 +1,9 @@
 import React from 'react';
 import {
   BrowserRouter as Router,
-  Route
+  Switch,
+  Route,
+  Link
 } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logoutUser } from '../actions/user';
@@ -17,6 +19,13 @@ const PublicHome = () => (
   </div>
 )
 
+const FourOhFour = () => (
+  <div>
+    <h2>Whoops...</h2>
+    <p>Looks like you're lost! Click <Link to="/">here</Link> to go home.</p>
+  </div>
+)
+
 const appStyle = {
   margin: '5vw'
 };
@@ -27,7 +36,7 @@ class App extends React.Component {
 
     const availableRoutes = [<Route path="/login/:network?" component={Login} key="1" />];
     if (user) {
-      availableRoutes.push(<Route path="/profile" render={props => (
+      availableRoutes.push(<Route exact path="/profile" render={props => (
           <Profile user={user} {...props} />
         )} key="2" />);
     }
@@ -39,15 +48,20 @@ class App extends React.Component {
 
           <hr/>
 
-          { // home route
-            user ?
-            <Route exact path="/" render={props => (<AuthHome user={user} {...props} />)} /> :
-            <Route exact path="/" component={PublicHome} />
-          }
+          <Switch>
+            { // home route
+              user ?
+              <Route exact path="/" render={props => (<AuthHome user={user} {...props} />)} /> :
+              <Route exact path="/" component={PublicHome} />
+            }
 
-          { // content routes
-            availableRoutes
-          }
+            { // content routes
+              availableRoutes
+            }
+
+            { /* no match route */ }
+            <Route component={FourOhFour} />
+          </Switch>
         </div>
       </Router>
     );
