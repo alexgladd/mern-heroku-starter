@@ -2,6 +2,7 @@ import React from 'react';
 import { Redirect } from 'react-router';
 import QueryString from 'query-string';
 import { connect } from 'react-redux';
+import LoginButton from './LoginButton';
 import { oauthAuthenticate } from '../actions/user';
 import oauth from '../util/oauth';
 
@@ -37,10 +38,8 @@ class Login extends React.Component {
       return (
         <div>
           <h2>Login</h2>
-          <p>Click below to log in with Github!</p>
-          <button className="zocial github" onClick={this.handleGithubLogin}>
-            Log in with Github
-          </button>
+          <p>Click below to log in with your preferred network!</p>
+          <LoginButton name="github" onClick={this.handleGithubLogin} />
         </div>
       );
     }

@@ -1,0 +1,44 @@
+/*
+login button styles
+style ideas from https://github.com/didrio/OAuth-With-Express
+*/
+
+.LoginButton {
+  width: 300px;
+  height: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #CCC;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  padding: 0 12px;
+  font-size: 1.25em;
+  cursor: pointer;
+  color: #fff;
+  outline: none;
+}
+
+#github {
+  background-color: #444444;
+}
+
+#github:hover {
+  background-color: #757474;
+}
+
+#google {
+  background-color: #DB4C3F;
+}
+
+#google:hover {
+  background-color: rgb(255, 112, 105);
+}
+
+#facebook {
+  background-color: #3D5A96;
+}
+
+#facebook:hover {
+  background-color: rgb(110, 142, 207);
+}
