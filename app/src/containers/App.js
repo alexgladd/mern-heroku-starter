@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from 'react-router-dom';
+import { Switch, Route, Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logoutUser } from '../actions/user';
 import Header from '../components/Header';
@@ -32,38 +27,33 @@ const appStyle = {
 
 class App extends React.Component {
   render() {
-    const { user, logout } = this.props;
-
-    const availableRoutes = [<Route path="/login/:network?" component={Login} key="1" />];
-    if (user) {
-      availableRoutes.push(<Route exact path="/profile" render={props => (
-          <Profile user={user} {...props} />
-        )} key="2" />);
-    }
+    const { user, logout, history } = this.props;
 
     return (
-      <Router>
-        <div style={appStyle}>
-          <Header user={user} onLogout={logout} />
+      <div style={appStyle}>
+        <Header user={user} onLogout={() => { logout(); history.push('/'); }} />
 
-          <hr/>
+        <hr/>
 
-          <Switch>
-            { // home route
-              user ?
-              <Route exact path="/" render={props => (<AuthHome user={user} {...props} />)} /> :
-              <Route exact path="/" component={PublicHome} />
-            }
+        <Switch>
+          { // home route
+            user ?
+            <Route exact path="/" render={props => (<AuthHome user={user} {...props} />)} /> :
+            <Route exact path="/" component={PublicHome} />
+          }
 
-            { // content routes
-              availableRoutes
-            }
+          { /* login and oauth routes */ }
+          <Route path="/login/:network?" component={Login} />
 
-            { /* no match route */ }
-            <Route component={FourOhFour} />
-          </Switch>
-        </div>
-      </Router>
+          { // profile route
+            user &&
+            <Route exact path="/profile" render={props => (<Profile user={user} {...props} />)} />
+          }
+
+          { /* no match route */ }
+          <Route component={FourOhFour} />
+        </Switch>
+      </div>
     );
   }
 }
@@ -76,4 +66,4 @@ const mapDispatchToProps = (dispatch) => ({
   logout() { dispatch(logoutUser()); }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
