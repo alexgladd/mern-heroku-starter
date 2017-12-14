@@ -6,6 +6,7 @@ import Header from '../components/Header';
 import AuthHome from '../components/AuthHome';
 import Login from '../components/Login';
 import Profile from '../components/Profile';
+import './App.css';
 
 const PublicHome = () => (
   <div>
@@ -21,16 +22,12 @@ const FourOhFour = () => (
   </div>
 )
 
-const appStyle = {
-  margin: '5vw'
-};
-
 class App extends React.Component {
   render() {
     const { user, logout, history } = this.props;
 
     return (
-      <div style={appStyle}>
+      <div className="App">
         <Header user={user} onLogout={() => { logout(); history.push('/'); }} />
 
         <hr/>

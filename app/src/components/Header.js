@@ -1,17 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-
-const headerLeft = {
-  width: '50%',
-  float: 'left'
-};
-
-const headerRight = {
-  width: '50%',
-  marginLeft: '50%',
-  textAlign: 'right'
-};
+import './Header.css';
 
 class Header extends React.Component {
   render () {
@@ -19,11 +9,11 @@ class Header extends React.Component {
 
     return (
       <header>
-        <div style={headerLeft}>
+        <div className="HeaderLeft">
           <Link to="/">Home</Link>
           { user && <span> · <Link to="/profile">Profile</Link></span> }
         </div>
-        <div style={headerRight}>
+        <div className="HeaderRight">
           { user ?
             <button onClick={() => onLogout()}>Logout</button> :
             <Link to="/login">Login</Link>

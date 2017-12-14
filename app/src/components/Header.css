@@ -1,0 +1,12 @@
+/* header component styles */
+
+.HeaderLeft {
+  width: 50%;
+  float: left;
+}
+
+.HeaderRight {
+  width: 50%;
+  margin-left: 50%;
+  text-align: right;
+}
