@@ -10,13 +10,20 @@ class Login extends React.Component {
   constructor(props) {
     super(props);
 
-    this.handleGithubLogin = this.handleGithubLogin.bind(this);
+    this.state = {
+      oauthButtons: [
+        oauth.clients.github
+      ]
+    };
+
+    this.handleOauthLogin = this.handleOauthLogin.bind(this);
+    this.renderLoginButtons = this.renderLoginButtons.bind(this);
   }
 
-  handleGithubLogin() {
+  handleOauthLogin(network) {
     const { serverState } = this.props;
-    // redirect to github oauth page
-    window.location.href = oauth.oauthUrl(oauth.clients.github, serverState.random);
+    // redirect to network's oauth page
+    window.location.href = oauth.oauthUrl(network, serverState.random);
   }
 
   componentDidMount() {
@@ -29,7 +36,17 @@ class Login extends React.Component {
     }
   }
 
-  render () {
+  renderLoginButtons() {
+    const { oauthButtons } = this.state;
+
+    return oauthButtons.map((network, idx) => {
+      return (
+        <LoginButton name={network} onClick={() => this.handleOauthLogin(network)} key={idx}/>
+      );
+    });
+  }
+
+  render() {
     const { user } = this.props;
 
     if (user) {
@@ -39,7 +56,7 @@ class Login extends React.Component {
         <div>
           <h2>Login</h2>
           <p>Click below to log in with your preferred network!</p>
-          <LoginButton name="github" onClick={this.handleGithubLogin} />
+          { this.renderLoginButtons() }
         </div>
       );
     }
