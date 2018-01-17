@@ -1,5 +1,6 @@
 // authentication controllers
 const Github = require('./github');
+const Facebook = require('./facebook');
 
 exports.localAuthenticate = (req, res) => {
   res.status(501).json({ errorMessage: 'Not implemented' });
@@ -11,6 +12,10 @@ exports.networkAuthenticate = (req, res) => {
   switch (req.params.network) {
     case 'github':
       Github.authenticate(req, res);
+      break;
+
+    case 'facebook':
+      Facebook.authenticate(req, res);
       break;
 
     default:

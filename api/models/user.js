@@ -9,6 +9,10 @@ const userSchema = new mongoose.Schema({
     id:         { type: Number, unique: true, sparse: true },
     profileUrl: { type: String },
     avatarUrl:  { type: String }
+  },
+  facebook: {
+    id:         { type: Number, unique: true, sparse: true },
+    avatarUrl:  { type: String }
   }
 });
 
@@ -16,7 +20,9 @@ userSchema.pre('save', function(next) {
   const user = this;
 
   // validate user has some type of auth id
-  if (user.password || (user.github && user.github.id)) {
+  if (user.password ||
+      (user.github && user.github.id) ||
+      (user.facebook && user.facebook.id)) {
     next();
   } else {
     const err = new Error('User must have an authentication identifier');
@@ -31,6 +37,9 @@ userSchema.methods.toUserResponse = function() {
     github: {
       profileUrl: this.github.profileUrl,
       avatarUrl: this.github.avatarUrl
+    },
+    facebook: {
+      avatarUrl: this.facebook.avatarUrl
     }
   };
 }
