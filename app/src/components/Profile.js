@@ -25,12 +25,19 @@ class Profile extends React.Component {
     const { user } = this.props;
     const { message } = this.state;
 
+    let network = 'Unknown';
+    if (user.github.avatarUrl) {
+      network = 'Github';
+    } else if (user.facebook.avatarUrl) {
+      network = 'Facebook';
+    }
+
     return (
       <div>
         <h2>Profile</h2>
         <ul>
           <li><strong>User name:</strong> {user.name}</li>
-          <li><strong>Network:</strong> {user.github ? 'Github' : 'Unknown'}</li>
+          <li><strong>Network:</strong> {network}</li>
         </ul>
         <p>Profile message: <code>{message}</code></p>
       </div>
