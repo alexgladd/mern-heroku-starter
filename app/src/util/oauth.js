@@ -11,7 +11,7 @@ const clients = {
 // oauth client IDs
 const clientIds = {
   github: (build.prod ? '5eb101fbdbdd9ce15d8f' : '8959958c36292d0b35d6'),
-  facebook: (build.prod ? '0123456789abcdef' : '585841458414671')
+  facebook: (build.prod ? '260478367820032' : '585841458414671')
 };
 
 // oauth URLs
