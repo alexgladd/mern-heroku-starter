@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import { faGithub/*, faFacebook, faGoogle*/ } from '@fortawesome/fontawesome-free-brands';
+import { faGithub, faFacebook/*, faGoogle*/ } from '@fortawesome/fontawesome-free-brands';
 import { faArrowAltCircleRight } from '@fortawesome/fontawesome-free-solid';
 import oauth from '../util/oauth';
 import './LoginButton.css';
@@ -13,10 +13,10 @@ const LoginButton = ({name, onClick}) => {
       icon = faGithub;
       break;
 
-    // case 'facebook':
-    //   icon = faFacebook;
-    //   break;
-    //
+    case 'facebook':
+      icon = faFacebook;
+      break;
+    
     // case 'google':
     //   icon = faGoogle;
     //   break;

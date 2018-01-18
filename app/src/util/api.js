@@ -9,10 +9,18 @@ const getServerState = async () => {
 }
 
 // finish oauth authentication
-const oauthAuthenticate = async (network, code) => {
+const oauthAuthenticate = async (network, code, extras) => {
+  let body = {
+    code
+  };
+
+  if (extras) {
+    body = { ...body, ...extras };
+  }
+
   const init = buildInit({
     method: 'POST',
-    body: JSON.stringify({ code })
+    body: JSON.stringify(body)
   });
 
   return await apiRequest(`/api/authenticate/${network}`, init);

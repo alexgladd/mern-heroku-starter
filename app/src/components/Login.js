@@ -12,7 +12,8 @@ class Login extends React.Component {
 
     this.state = {
       oauthButtons: [
-        oauth.clients.github
+        oauth.clients.github,
+        oauth.clients.facebook
       ]
     };
 
@@ -32,7 +33,13 @@ class Login extends React.Component {
     const query = QueryString.parse(location.search);
     if (query.code && match.params.network) {
       // finish oauth authentication
-      finishOauth(match.params.network, query.code);
+      const network = match.params.network;
+
+      if (network === oauth.clients.facebook) {
+        finishOauth(network, query.code, { redirectUri: oauth.oauthRedirectUrl(network) });
+      } else {
+        finishOauth(network, query.code);
+      }
     }
   }
 
@@ -69,7 +76,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  finishOauth(network, code) { dispatch(oauthAuthenticate(network, code)); }
+  finishOauth(network, code, extras) { dispatch(oauthAuthenticate(network, code, extras)); }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

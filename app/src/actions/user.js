@@ -16,10 +16,10 @@ export const logoutUser = () => ({
   type: UserActions.logout
 });
 
-export const oauthAuthenticate = (network, code) => {
+export const oauthAuthenticate = (network, code, extras) => {
   return async (dispatch) => {
     try {
-      const authUser = await api.oauthAuthenticate(network, code);
+      const authUser = await api.oauthAuthenticate(network, code, extras);
       console.log('Got oauth result', authUser);
       dispatch(loginUser(authUser));
     } catch(err) {

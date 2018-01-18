@@ -34,7 +34,7 @@ exports.authenticate = async (req, res) => {
         name: profileData.name,
         facebook: {
           id: profileData.id,
-          avatarUrl: profileData.picture.url,
+          avatarUrl: profileData.picture.data.url,
         }
       });
 
@@ -57,7 +57,7 @@ const getAccessToken = async (code, redirectUri) => {
     headers: fbHeaders()
   };
 
-  const response = await fetch(`https://graph.facebook.com/v2.11/oauth/access_token?client_id=${fbConfig.id}&client_secret=${fbConfig.secret}&redirect_uri=${redirect_uri}&code=${code}&state=${state.random}`, init);
+  const response = await fetch(`https://graph.facebook.com/v2.11/oauth/access_token?client_id=${fbConfig.id}&client_secret=${fbConfig.secret}&redirect_uri=${redirectUri}&code=${code}&state=${state.random}`, init);
   return await response.json();
 }
 
