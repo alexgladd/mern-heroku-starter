@@ -8,6 +8,7 @@ yarn-error.log*
 
 # dev stuff
 /.env
+/.vscode
 
 # misc
 .DS_Store
